@@ -73,6 +73,14 @@ jobs:
 
       - name: Pre Clone
         run: ./wrt_core/pre_clone_action.sh ${{ inputs.model }}
+      - name: Locate Netfilter Patch
+        run: |
+          echo "Searching repository scripts..."
+          grep -Rni -C 8 -E \
+            "Netfilter kmod clash workaround target not found|NF_IPT mapping|IPT_CORE" \
+            . \
+            --exclude-dir=.git \
+            --exclude-dir=action_build || true
 
       - name: Cache Dependencies
         uses: actions/cache@v6.1.0
